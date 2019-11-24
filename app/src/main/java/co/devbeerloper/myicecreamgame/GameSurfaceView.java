@@ -16,7 +16,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private boolean isPlaying;
     private Nave nave;
 
-    private ArrayList<Cloud> clouds;
+    private ArrayList<Star> stars;
 
     private ArrayList<NaveEnemiga> naveEnemigas;
     private ArrayList<Asteroide> asteroides;
@@ -45,7 +45,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         super(context);
         nave = new Nave(context, screenWith, screenHeight);
 
-        this.clouds = new ArrayList<Cloud>();
+        this.stars = new ArrayList<Star>();
 
         this.naveEnemigas = new ArrayList<NaveEnemiga>();
         this.asteroides = new ArrayList<Asteroide>();
@@ -82,7 +82,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private void updateInfo() {
         nave.updateInfo();
 
-        for (Cloud c : clouds) {
+        for (Star c : stars) {
             c.updateInfo();
         }
 
@@ -107,7 +107,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
-            canvas.drawColor(Color.rgb(52, 153, 255));
+            canvas.drawColor(Color.rgb(0, 0, 0));
             Paint text = new Paint();
             text.setTextSize(45);
             text.setColor(Color.RED);
@@ -120,9 +120,9 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
 
             //Si está en pantalla se pinta, sino se borra de la lista
-            for (int i = 0; i < clouds.size(); i++) {
-                if (clouds.get(i).isVisible())
-                    canvas.drawBitmap(clouds.get(i).getSpriteIcecreamCar(), clouds.get(i).getPositionX(), clouds.get(i).getPositionY(), new Paint());
+            for (int i = 0; i < stars.size(); i++) {
+                if (stars.get(i).isVisible())
+                    canvas.drawBitmap(stars.get(i).getSprite(), stars.get(i).getPositionX(), stars.get(i).getPositionY(), new Paint());
                 else
                     removeID.add(i);
             }
@@ -142,7 +142,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
 
             for (int i = 0; i < removeID.size(); i++)
-                clouds.remove(removeID.get(i));
+                stars.remove(removeID.get(i));
             for (int i = 0; i < removeID.size(); i++)
                 naveEnemigas.remove(removeID.get(i));
             for (int i = 0; i < removeID.size(); i++)
@@ -157,7 +157,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             canvas.drawBitmap(nave.getSpriteNave(), nave.getPositionX(), nave.getPositionY(), paint);
             int r = rd.nextInt(10000);
             if (r > 10000 * porcentajeProbabilidad) {
-                Cloud cloud = new Cloud(getContext(), screenWith, screenHeight);
+
 
                 int pos = rd.nextInt(PosY.size() - 1);
                 NaveEnemiga naveEnemiga = new NaveEnemiga(getContext(), screenWith, screenHeight, PosY.get(pos));
@@ -169,13 +169,16 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                     asteroides.add(asteroide);
                 }
 
-                //canvas.drawBitmap(cloud.getSpriteNave(),cloud.getPositionX(),cloud.getPositionY(),paintCloud);
-                clouds.add(cloud);
+
                 naveEnemigas.add(naveEnemiga);
 
+                int starsBound = rd.nextInt(5);
 
-                canvas.drawBitmap(cloud.getSpriteIcecreamCar(), cloud.getPositionX(), cloud.getPositionY(), new Paint());
-
+                for(int i=0; i<starsBound;i++) {
+                    Star star = new Star(getContext(), screenWith, screenHeight);
+                    stars.add(star);
+                    canvas.drawBitmap(star.getSprite(), star.getPositionX(), star.getPositionY(), new Paint());
+                }
 
 
                 ArrayList<Asteroide> newAsteroide = new ArrayList<Asteroide>();

@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
+    android:background="@color/SpaceGray"
     >
 
     <TextView
         android:id="@+id/tvGameTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="THE ICE CREAM GAME"
+        android:text="Space Adventure"
         android:textAllCaps="false"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,6 +40,7 @@
 
     <Button
         android:id="@+id/btnPlayGame"
+        android:background="@color/SpaceGrayButton"
         android:layout_width="221dp"
         android:layout_height="53dp"
         android:layout_marginStart="8dp"
