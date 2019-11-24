@@ -121,7 +121,7 @@ public class NaveEnemiga {
     public void updateInfo () {
 
 
-        if(this.positionX>-100)
+        if(this.positionX>0)
             this.positionX-=5;
         else
             this.visible=false;
