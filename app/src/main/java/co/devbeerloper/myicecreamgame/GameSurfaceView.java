@@ -303,7 +303,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                         break;
                     case MotionEvent.ACTION_DOWN:
                         System.out.println("TOUCH DOWN - FIRE!");
-                        DisparoNave disparo = new DisparoNave(this.context, nave.getPositionX(), nave.getPositionY(), screenWith, screenHeight);
+                        DisparoNave disparo = new DisparoNave(this.context, nave.getPositionX() + nave.getSpriteNave().getWidth(), nave.getPositionY()+ nave.getSpriteNave().getHeight()/2, screenWith, screenHeight);
                         disparos.add(disparo);
                         break;
                 }
@@ -313,14 +313,16 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         public boolean checkAsteroidCollision (Asteroide asteroide){
 
             return nave.getPositionX() + nave.getSpriteNave().getWidth() > asteroide.getPositionX() &&
-                    nave.getPositionY() + nave.getSpriteNave().getHeight() >= asteroide.getPositionY() + asteroide.getSpriteAsteroide().getHeight() &&
+                    nave.getPositionX() < asteroide.getPositionX()  &&
+                    nave.getPositionY() + nave.getSpriteNave().getHeight() >= asteroide.getPositionY() &&
                     nave.getPositionY() <= asteroide.getPositionY();
 
         }
 
         public boolean checkEnemyCollision (NaveEnemiga naveEnemiga){
             return nave.getPositionX() + nave.getSpriteNave().getWidth() > naveEnemiga.getPositionX() &&
-                    nave.getPositionY() + nave.getSpriteNave().getHeight() >= naveEnemiga.getPositionY() + naveEnemiga.getSpriteNaveEnemiga().getHeight() &&
+                    nave.getPositionX() < naveEnemiga.getPositionX()  &&
+                    nave.getPositionY() + nave.getSpriteNave().getHeight() >= naveEnemiga.getPositionY() &&
                     nave.getPositionY() <= naveEnemiga.getPositionY();
         }
 
