@@ -19,9 +19,15 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private ArrayList<Star> stars;
     private ArrayList<NaveEnemiga> naveEnemigas;
     private ArrayList<Asteroide> asteroides;
+    private ArrayList<DisparoNave> disparos;
+    private ArrayList<DisparoEnemigo> disparosEnemigos;
+
     ArrayList<Star> starsToKeep;
     ArrayList<NaveEnemiga> enemiesToKeep;
     ArrayList<Asteroide> asteroidesToKeep;
+    ArrayList<DisparoNave> disparosToKeep;
+    ArrayList<DisparoEnemigo> disparosEnemigosToKeep;
+
     private Paint paint;
     private Paint paintCloud;
     private Paint paintAdult;
@@ -50,6 +56,9 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
         this.naveEnemigas = new ArrayList<NaveEnemiga>();
         this.asteroides = new ArrayList<Asteroide>();
+        this.disparos = new ArrayList<DisparoNave>();
+        this.disparosEnemigos = new ArrayList<DisparoEnemigo>();
+
         paint = new Paint();
         paintCloud = new Paint();
         paintAdult = new Paint();
@@ -95,7 +104,11 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             b.updateInfo();
         }
 
+        for (DisparoNave disparoNave : disparos)
+            disparoNave.updateInfo();
 
+        for (DisparoEnemigo disparoEnemigo : disparosEnemigos)
+            disparoEnemigo.updateInfo();
     }
 
     private void paintFrame() {
@@ -119,7 +132,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             starsToKeep = new ArrayList<Star>();
             enemiesToKeep = new ArrayList<NaveEnemiga>();
             asteroidesToKeep = new ArrayList<Asteroide>();
-
+            disparosToKeep = new ArrayList<DisparoNave>();
+            disparosEnemigosToKeep = new ArrayList<DisparoEnemigo>();
 
             //Si está en pantalla se pinta, sino se borra de la lista
             for (int i = 0; i < stars.size(); i++) {
@@ -147,150 +161,169 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 }
             }
 
-            stars = starsToKeep;
-            naveEnemigas = enemiesToKeep;
-            asteroides = asteroidesToKeep;
+            for (int i = 0; i < disparos.size(); i++) {
+                if (disparos.get(i).isVisible()) {
+                    canvas.drawBitmap(disparos.get(i).getSpriteDisparoNave(), disparos.get(i).getPositionX(), disparos.get(i).getPositionY(), new Paint());
+                    disparosToKeep.add(disparos.get(i));
+                }
+            }
+
+            for (int i = 0; i < disparosEnemigos.size(); i++) {
+                if (disparosEnemigos.get(i).isVisible()) {
+                    canvas.drawBitmap(disparosEnemigos.get(i).getSpriteDisparoEnemigo(), disparosEnemigos.get(i).getPositionX(), disparosEnemigos.get(i).getPositionY(), new Paint());
+                    disparosEnemigosToKeep.add(disparosEnemigos.get(i));
+                }
+            }
+
+                stars = starsToKeep;
+                naveEnemigas = enemiesToKeep;
+                asteroides = asteroidesToKeep;
+
+                disparos=disparosToKeep;
+                disparosEnemigos=disparosEnemigosToKeep;
+
+                double porcentajeProbabilidad = 0.98;
+                boolean end = false;
+                canvas.drawBitmap(nave.getSpriteNave(), nave.getPositionX(), nave.getPositionY(), paint);
+                int r = rd.nextInt(10000);
+                if (r > 10000 * porcentajeProbabilidad) {
 
 
-            double porcentajeProbabilidad = 0.98;
-            boolean end = false;
-            canvas.drawBitmap(nave.getSpriteNave(), nave.getPositionX(), nave.getPositionY(), paint);
-            int r = rd.nextInt(10000);
-            if (r > 10000 * porcentajeProbabilidad) {
+                    int pos = rd.nextInt(PosY.size() - 1);
+                    NaveEnemiga naveEnemiga = new NaveEnemiga(getContext(), screenWith, screenHeight, PosY.get(pos));
+                    Boolean b = PosY.remove((Object) pos);
+                    pos = rd.nextInt(PosY.size() - 1);
+
+                    if (r % 2 == 0 || r % 3 == 0) {
+                        Asteroide asteroide = new Asteroide(getContext(), screenWith, screenHeight, PosY.get(pos));
+                        asteroides.add(asteroide);
+                    }
 
 
-                int pos = rd.nextInt(PosY.size() - 1);
-                NaveEnemiga naveEnemiga = new NaveEnemiga(getContext(), screenWith, screenHeight, PosY.get(pos));
-                Boolean b = PosY.remove((Object) pos);
-                pos = rd.nextInt(PosY.size() - 1);
+                    naveEnemigas.add(naveEnemiga);
 
-                if (r % 2 == 0 || r % 3 == 0) {
-                    Asteroide asteroide = new Asteroide(getContext(), screenWith, screenHeight, PosY.get(pos));
-                    asteroides.add(asteroide);
+                    int starsBound = rd.nextInt(5);
+
+                    for (int i = 0; i < starsBound; i++) {
+                        Star star = new Star(getContext(), screenWith, screenHeight);
+                        stars.add(star);
+                        canvas.drawBitmap(star.getSprite(), star.getPositionX(), star.getPositionY(), new Paint());
+                    }
+
+
+                    ArrayList<Asteroide> newAsteroide = new ArrayList<Asteroide>();
+                    for (Asteroide asteroide1 : asteroides)
+                        if (checkAsteroidCollision(asteroide1)) {
+                            isPlaying = false;
+                            end = true;
+                        } else
+                            newAsteroide.add(asteroide1);
+
+
+                    asteroides = newAsteroide;
+
+                    ArrayList<NaveEnemiga> newNaveEnemiga = new ArrayList<NaveEnemiga>();
+
+                    for (NaveEnemiga naveEnemiga1 : naveEnemigas) {
+                        if (checkEnemyCollision(naveEnemiga1)) {
+                            isPlaying = false;
+                            end = true;
+                        } else
+                            newNaveEnemiga.add(naveEnemiga1);
+                    }
+
+
+                    naveEnemigas = newNaveEnemiga;
+
+                    if (end) {
+                        Paint endtext = new Paint();
+                        endtext.setTextSize(145);
+                        endtext.setColor(Color.RED);
+                        canvas.drawText("Game Over!", (screenWith / 2) - endtext.getTextSize() * 5 / 2, screenHeight / 2, endtext);
+                    }
+                    holder.unlockCanvasAndPost(canvas);
+
+
+                } else {
+                    holder.unlockCanvasAndPost(canvas);
                 }
 
 
-                naveEnemigas.add(naveEnemiga);
-
-                int starsBound = rd.nextInt(5);
-
-                for (int i = 0; i < starsBound; i++) {
-                    Star star = new Star(getContext(), screenWith, screenHeight);
-                    stars.add(star);
-                    canvas.drawBitmap(star.getSprite(), star.getPositionX(), star.getPositionY(), new Paint());
-                }
-
-
-                ArrayList<Asteroide> newAsteroide = new ArrayList<Asteroide>();
-                for (Asteroide asteroide1 : asteroides)
-                    if (checkAsteroidCollision(asteroide1)) {
-                        isPlaying = false;
-                        end = true;
-                    } else
-                        newAsteroide.add(asteroide1);
-
-
-                asteroides = newAsteroide;
-
-                ArrayList<NaveEnemiga> newNaveEnemiga = new ArrayList<NaveEnemiga>();
-
-                for (NaveEnemiga naveEnemiga1 : naveEnemigas) {
-                    if (checkEnemyCollision(naveEnemiga1)) {
-                        isPlaying = false;
-                        end = true;
-                    } else
-                        newNaveEnemiga.add(naveEnemiga1);
-                }
-
-
-                naveEnemigas = newNaveEnemiga;
-
-                if (end) {
-                    Paint endtext = new Paint();
-                    endtext.setTextSize(145);
-                    endtext.setColor(Color.RED);
-                    canvas.drawText("Game Over!", (screenWith / 2) - endtext.getTextSize() * 5 / 2, screenHeight / 2, endtext);
-                }
-                holder.unlockCanvasAndPost(canvas);
-
-
-            } else {
-                holder.unlockCanvasAndPost(canvas);
             }
 
 
         }
 
 
-    }
-
-
-    public void pause() {
-        isPlaying = false;
-        try {
-            gameplayThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        public void pause () {
+            isPlaying = false;
+            try {
+                gameplayThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
+
+        public void resume () {
+
+            isPlaying = true;
+            gameplayThread = new Thread(this);
+            gameplayThread.start();
+        }
+
+        /**
+         * Detect the action of the touch event
+         *
+         * @param motionEvent
+         * @return
+         */
+        @Override
+        public boolean onTouchEvent (MotionEvent motionEvent){
+            //Movimiento
+            if (motionEvent.getX() < screenWith / 2)
+                switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_UP:
+
+                        System.out.println("TOUCH UP - STOP JUMPING");
+                        nave.setJumping(false);
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        System.out.println("TOUCH DOWN - JUMP");
+                        nave.setJumping(true);
+                        break;
+                }
+            //Disparo
+            if (motionEvent.getX() > screenWith / 2)
+                switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_UP:
+
+                        System.out.println("TOUCH UP - NOTHING");
+                        //Nada
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        System.out.println("TOUCH DOWN - FIRE!");
+                        DisparoNave disparo = new DisparoNave(this.context, nave.getPositionX() + nave.getSpriteNave().getWidth(), nave.getPositionY()+ nave.getSpriteNave().getHeight()/2, screenWith, screenHeight);
+                        disparos.add(disparo);
+                        break;
+                }
+            return true;
+        }
+
+        public boolean checkAsteroidCollision (Asteroide asteroide){
+
+            return nave.getPositionX() + nave.getSpriteNave().getWidth() > asteroide.getPositionX() &&
+                    nave.getPositionX() < asteroide.getPositionX()  &&
+                    nave.getPositionY() + nave.getSpriteNave().getHeight() >= asteroide.getPositionY() &&
+                    nave.getPositionY() <= asteroide.getPositionY();
+
+        }
+
+        public boolean checkEnemyCollision (NaveEnemiga naveEnemiga){
+            return nave.getPositionX() + nave.getSpriteNave().getWidth() > naveEnemiga.getPositionX() &&
+                    nave.getPositionX() < naveEnemiga.getPositionX()  &&
+                    nave.getPositionY() + nave.getSpriteNave().getHeight() >= naveEnemiga.getPositionY() &&
+                    nave.getPositionY() <= naveEnemiga.getPositionY();
+        }
+
     }
-
-
-    public void resume() {
-
-        isPlaying = true;
-        gameplayThread = new Thread(this);
-        gameplayThread.start();
-    }
-
-    /**
-     * Detect the action of the touch event
-     *
-     * @param motionEvent
-     * @return
-     */
-    @Override
-    public boolean onTouchEvent(MotionEvent motionEvent) {
-        //Movimiento
-        if (motionEvent.getX() < screenWith / 2)
-            switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-                case MotionEvent.ACTION_UP:
-
-                    System.out.println("TOUCH UP - STOP JUMPING");
-                    nave.setJumping(false);
-                    break;
-                case MotionEvent.ACTION_DOWN:
-                    System.out.println("TOUCH DOWN - JUMP");
-                    nave.setJumping(true);
-                    break;
-            }
-        //Disparo
-        if (motionEvent.getX() > screenWith / 2)
-            switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-                case MotionEvent.ACTION_UP:
-
-                    System.out.println("TOUCH UP - NOTHING");
-                    //Nada
-                    break;
-                case MotionEvent.ACTION_DOWN:
-                    System.out.println("TOUCH DOWN - FIRE!");
-                    nave.fire();
-                    break;
-            }
-        return true;
-    }
-
-    public boolean checkAsteroidCollision(Asteroide asteroide) {
-
-        return nave.getPositionX() + nave.getSpriteNave().getWidth() > asteroide.getPositionX() &&
-                nave.getPositionY() + nave.getSpriteNave().getHeight() >= asteroide.getPositionY() + asteroide.getSpriteAsteroide().getHeight() &&
-                nave.getPositionY() <= asteroide.getPositionY();
-
-    }
-
-    public boolean checkEnemyCollision(NaveEnemiga naveEnemiga) {
-        return nave.getPositionX() + nave.getSpriteNave().getWidth() > naveEnemiga.getPositionX() &&
-                nave.getPositionY() + nave.getSpriteNave().getHeight() >= naveEnemiga.getPositionY() + naveEnemiga.getSpriteNaveEnemiga().getHeight() &&
-                nave.getPositionY() <= naveEnemiga.getPositionY();
-    }
-
-}
