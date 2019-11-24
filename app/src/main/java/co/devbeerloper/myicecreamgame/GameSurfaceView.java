@@ -345,7 +345,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                         naveEnemiga.getPositionY() + naveEnemiga.getSpriteNaveEnemiga().getHeight() >= disparoNave.getPositionY() &&
                         naveEnemiga.getPositionY() <= disparoNave.getPositionY();
                 if (colision) {
-                    score += 10;
+                    score += 100;
                     naveEnemiga.setVisible(false);
                     disparoNave.setVisible(false);
                 }
@@ -359,7 +359,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                         asteroide.getPositionY() + asteroide.getSpriteAsteroide().getHeight() >= disparoNave.getPositionY() &&
                         asteroide.getPositionY() <= disparoNave.getPositionY();
                 if (colision) {
-                    score += 10;
+                    score += 100;
                     asteroide.setVisible(false);
                     disparoNave.setVisible(false);
                 }
