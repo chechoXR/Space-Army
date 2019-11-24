@@ -13,7 +13,6 @@ public class DisparoNave {
     public static final int SPRITE_SIZE_WIDTH = 100;
     public static final int SPRITE_SIZE_HEIGTH = 10;
 
-
     private float speed = 0;
     private float positionX;
     private float positionY;
@@ -23,8 +22,6 @@ public class DisparoNave {
     private float screenHeigth;
 
     public DisparoNave(Context context, float x, float y, float screenWidth, float screenHeigth) {
-        Random rd = new Random();
-
         speed = 3;
         positionX = x;
         positionY = y;
@@ -33,7 +30,6 @@ public class DisparoNave {
         //Getting bitmap from resource
         Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.balanave);
         spriteDisparoNave = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
-
     }
 
 

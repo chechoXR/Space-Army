@@ -8,63 +8,28 @@ import java.util.Random;
 
 public class DisparoEnemigo {
 
-    public static final float INIT_X =100;
-    public static final float INIT_Y =100;
-    public static final int SPRITE_SIZE_WIDTH =80;
-    public static final int SPRITE_SIZE_HEIGTH=81;
-
-
-
+    public static final float INIT_X = 100;
+    public static final float INIT_Y = 100;
+    public static final int SPRITE_SIZE_WIDTH = 100;
+    public static final int SPRITE_SIZE_HEIGTH= 10;
 
     private float speed = 0;
     private float positionX;
     private float positionY;
     private Bitmap spriteDisparoEnemigo;
     private boolean visible = true;
+    private float screenWidth;
+    private float screenHeigth;
 
-
-    public DisparoEnemigo (Context context, float screenWidth, float screenHeigth){
-        Random rd = new Random();
-
+    public DisparoEnemigo (Context context, float x, float y, float screenWidth, float screenHeigth){
         speed = 3;
-        positionX =screenWidth;
-        positionY =rd.nextInt((int)(screenHeigth));
-
+        positionX = x;
+        positionY= y;
+        this.screenWidth = screenWidth;
+        this.screenHeigth = screenHeigth;
         //Getting bitmap from resource
-
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.balaenemiga);
-
+        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.balaenemiga);
         spriteDisparoEnemigo = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
-
-    }
-
-    public DisparoEnemigo(Context context, float screenWidth, float screenHeigth, int y){
-        Random rd = new Random();
-
-        speed = 3;
-        positionX =screenWidth;
-        positionY =rd.nextInt(y);
-
-        //Getting bitmap from resource
-
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.balaenemiga);
-
-        spriteDisparoEnemigo = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
-
-    }
-
-    public DisparoEnemigo(Context context, float initialX, float initialY, float screenWidth, float screenHeigth){
-
-        speed = 3;
-        positionX = initialX;
-        positionY = initialY;
-
-
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.balaenemiga);
-
-        spriteDisparoEnemigo = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
-
-
     }
 
     public static float getInitX() {
