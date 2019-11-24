@@ -49,7 +49,7 @@ public class Star {
         positionX = initialX;
         positionY = initialY;
 
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.cloud);
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.estrella);
         spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);

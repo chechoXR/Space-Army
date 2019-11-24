@@ -8,15 +8,7 @@
     android:background="@color/SpaceGray"
     >
 
-    <TextView
-        android:id="@+id/tvGameTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Space Adventure"
-        android:textAllCaps="false"
-        android:textStyle="bold"
-    android:background="#040E4B"
-    tools:context=".MainActivity">
+
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -41,20 +33,7 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/navemenu" />
 
-    <Button
-        android:id="@+id/btnPlayGame"
-        android:background="@color/SpaceGrayButton"
-        android:layout_width="221dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="153dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="150dp"
-        android:onClick="playGame"
-        android:text="PLAY"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+
         
     <TextView
         android:id="@+id/textView"

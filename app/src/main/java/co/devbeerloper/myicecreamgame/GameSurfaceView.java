@@ -252,8 +252,10 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
      */
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
+        if(motionEvent.getX() < screenWith/2)
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
+
                 System.out.println("TOUCH UP - STOP JUMPING");
                 nave.setJumping(false);
                 break;
