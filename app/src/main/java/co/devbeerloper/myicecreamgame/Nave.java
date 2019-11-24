@@ -17,7 +17,7 @@ public class Nave {
 
     private float maxY;
     private float maxX;
-
+    private Context context;
     private float speed = 0;
     private float positionX;
     private float positionY;
@@ -34,7 +34,7 @@ public class Nave {
         //Getting bitmap from resource
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.nave);
         spriteNave = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
-
+        this.context=context;
         this.maxX = screenWidth - (spriteNave.getWidth()/2);
         this.maxY = screenHeigth - spriteNave.getHeight();
     }
@@ -129,9 +129,5 @@ public class Nave {
 
     }
 
-    //Se dispara una bala
-    public void fire(){
 
-
-    }
 }

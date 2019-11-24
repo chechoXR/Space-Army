@@ -10,8 +10,8 @@ public class DisparoNave {
 
     public static final float INIT_X = 100;
     public static final float INIT_Y = 100;
-    public static final int SPRITE_SIZE_WIDTH = 80;
-    public static final int SPRITE_SIZE_HEIGTH = 81;
+    public static final int SPRITE_SIZE_WIDTH = 100;
+    public static final int SPRITE_SIZE_HEIGTH = 10;
 
 
     private float speed = 0;
@@ -19,51 +19,23 @@ public class DisparoNave {
     private float positionY;
     private Bitmap spriteDisparoNave;
     private boolean visible = true;
+    private float screenWidth;
+    private float screenHeigth;
 
-
-    public DisparoNave(Context context, float screenWidth, float screenHeigth) {
+    public DisparoNave(Context context, float x, float y, float screenWidth, float screenHeigth) {
         Random rd = new Random();
 
         speed = 3;
-        positionX = screenWidth;
-        positionY = rd.nextInt((int) (screenHeigth));
-
+        positionX = x;
+        positionY = y;
+        this.screenWidth=screenWidth;
+        this.screenHeigth=screenHeigth;
         //Getting bitmap from resource
-
         Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.balanave);
-
         spriteDisparoNave = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
     }
 
-    public DisparoNave(Context context, float screenWidth, float screenHeigth, int y) {
-        Random rd = new Random();
-
-        speed = 3;
-        positionX = screenWidth;
-        positionY = rd.nextInt(y);
-
-        //Getting bitmap from resource
-
-        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.balanave);
-
-        spriteDisparoNave = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
-
-    }
-
-    public DisparoNave(Context context, float initialX, float initialY, float screenWidth, float screenHeigth) {
-
-        speed = 3;
-        positionX = initialX;
-        positionY = initialY;
-
-
-        Bitmap originalBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.balanave);
-
-        spriteDisparoNave= Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
-
-
-    }
 
     public static float getInitX() {
         return INIT_X;
@@ -112,8 +84,8 @@ public class DisparoNave {
     public void updateInfo() {
 
 
-        if (this.positionX > -100)
-            this.positionX -= 5;
+        if (this.positionX < this.screenWidth)
+            this.positionX += 5;
         else
             this.visible = false;
 
