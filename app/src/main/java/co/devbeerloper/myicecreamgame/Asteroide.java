@@ -110,12 +110,12 @@ public class Asteroide {
 
 
     /**
-     * Control the position and behaviour of the icecream car
+     * Control the position and behaviour of the spaceship car
      */
     public void updateInfo () {
 
 
-        if(this.positionX>-100)
+        if(this.positionX>0)
             this.positionX-=5;
         else
             this.visible=false;

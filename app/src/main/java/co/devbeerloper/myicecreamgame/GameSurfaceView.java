@@ -17,10 +17,11 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private Nave nave;
 
     private ArrayList<Star> stars;
-
     private ArrayList<NaveEnemiga> naveEnemigas;
     private ArrayList<Asteroide> asteroides;
-    ArrayList<Integer> removeID;
+    ArrayList<Star> starsToKeep;
+    ArrayList<NaveEnemiga> enemiesToKeep;
+    ArrayList<Asteroide> asteroidesToKeep;
     private Paint paint;
     private Paint paintCloud;
     private Paint paintAdult;
@@ -115,40 +116,40 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
 
             //holder.unlockCanvasAndPost(canvas);
-            removeID = new ArrayList<Integer>();
+            starsToKeep = new ArrayList<Star>();
+            enemiesToKeep = new ArrayList<NaveEnemiga>();
+            asteroidesToKeep = new ArrayList<Asteroide>();
 
 
             //Si está en pantalla se pinta, sino se borra de la lista
             for (int i = 0; i < stars.size(); i++) {
-                if (stars.get(i).isVisible())
+                if (stars.get(i).isVisible()) {
                     canvas.drawBitmap(stars.get(i).getSprite(), stars.get(i).getPositionX(), stars.get(i).getPositionY(), new Paint());
-                else
-                    removeID.add(i);
+                    starsToKeep.add(stars.get(i));
+                } else
+                    score -= 10;
             }
 
             for (int i = 0; i < naveEnemigas.size(); i++) {
-                if (naveEnemigas.get(i).isVisible())
+                if (naveEnemigas.get(i).isVisible()) {
                     canvas.drawBitmap(naveEnemigas.get(i).getSpriteNaveEnemiga(), naveEnemigas.get(i).getPositionX(), naveEnemigas.get(i).getPositionY(), new Paint());
-                else
-                    removeID.add(i);
+                    enemiesToKeep.add(naveEnemigas.get(i));
+                } else {
+                    score -= 10;
+                }
             }
             for (int i = 0; i < asteroides.size(); i++) {
-                if (asteroides.get(i).isVisible())
+                if (asteroides.get(i).isVisible()) {
                     canvas.drawBitmap(asteroides.get(i).getSpriteAsteroide(), asteroides.get(i).getPositionX(), asteroides.get(i).getPositionY(), new Paint());
-                else
-                    removeID.add(i);
+                    asteroidesToKeep.add(asteroides.get(i));
+                } else {
+                    score -= 10;
+                }
             }
 
-
-            for (int i = 0; i < removeID.size(); i++)
-                stars.remove(removeID.get(i));
-            for (int i = 0; i < removeID.size(); i++)
-                naveEnemigas.remove(removeID.get(i));
-            for (int i = 0; i < removeID.size(); i++)
-                asteroides.remove(removeID.get(i));
-
-
-            removeID.clear();
+            stars = starsToKeep;
+            naveEnemigas = enemiesToKeep;
+            asteroides = asteroidesToKeep;
 
 
             double porcentajeProbabilidad = 0.98;
@@ -182,9 +183,10 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
                 ArrayList<Asteroide> newAsteroide = new ArrayList<Asteroide>();
                 for (Asteroide asteroide1 : asteroides)
-                    if (checkBoyCollision(asteroide1))
-                        score += 10;
-                    else
+                    if (checkAsteroidCollision(asteroide1)) {
+                        isPlaying = false;
+                        end = true;
+                    } else
                         newAsteroide.add(asteroide1);
 
 
@@ -193,7 +195,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 ArrayList<NaveEnemiga> newNaveEnemiga = new ArrayList<NaveEnemiga>();
 
                 for (NaveEnemiga naveEnemiga1 : naveEnemigas) {
-                    if (checkAdultCollision(naveEnemiga1)) {
+                    if (checkEnemyCollision(naveEnemiga1)) {
                         isPlaying = false;
                         end = true;
                     } else
@@ -248,7 +250,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
      */
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-       //Movimiento
+        //Movimiento
         if (motionEvent.getX() < screenWith / 2)
             switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_UP:
@@ -277,7 +279,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         return true;
     }
 
-    public boolean checkBoyCollision(Asteroide asteroide) {
+    public boolean checkAsteroidCollision(Asteroide asteroide) {
 
         return nave.getPositionX() + nave.getSpriteNave().getWidth() > asteroide.getPositionX() &&
                 nave.getPositionY() + nave.getSpriteNave().getHeight() >= asteroide.getPositionY() + asteroide.getSpriteAsteroide().getHeight() &&
@@ -285,7 +287,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
     }
 
-    public boolean checkAdultCollision(NaveEnemiga naveEnemiga) {
+    public boolean checkEnemyCollision(NaveEnemiga naveEnemiga) {
         return nave.getPositionX() + nave.getSpriteNave().getWidth() > naveEnemiga.getPositionX() &&
                 nave.getPositionY() + nave.getSpriteNave().getHeight() >= naveEnemiga.getPositionY() + naveEnemiga.getSpriteNaveEnemiga().getHeight() &&
                 nave.getPositionY() <= naveEnemiga.getPositionY();
