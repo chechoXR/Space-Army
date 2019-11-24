@@ -126,37 +126,30 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 if (stars.get(i).isVisible()) {
                     canvas.drawBitmap(stars.get(i).getSprite(), stars.get(i).getPositionX(), stars.get(i).getPositionY(), new Paint());
                     starsToKeep.add(stars.get(i));
-                }
-                else
-                    score-=10;
+                } else
+                    score -= 10;
             }
 
             for (int i = 0; i < naveEnemigas.size(); i++) {
                 if (naveEnemigas.get(i).isVisible()) {
                     canvas.drawBitmap(naveEnemigas.get(i).getSpriteNaveEnemiga(), naveEnemigas.get(i).getPositionX(), naveEnemigas.get(i).getPositionY(), new Paint());
                     enemiesToKeep.add(naveEnemigas.get(i));
-                }
-                else{
-                    score-=10;
+                } else {
+                    score -= 10;
                 }
             }
             for (int i = 0; i < asteroides.size(); i++) {
                 if (asteroides.get(i).isVisible()) {
                     canvas.drawBitmap(asteroides.get(i).getSpriteAsteroide(), asteroides.get(i).getPositionX(), asteroides.get(i).getPositionY(), new Paint());
                     asteroidesToKeep.add(asteroides.get(i));
-                }
-                else{
-                    score-=10;
+                } else {
+                    score -= 10;
                 }
             }
 
             stars = starsToKeep;
             naveEnemigas = enemiesToKeep;
             asteroides = asteroidesToKeep;
-
-
-
-           
 
 
             double porcentajeProbabilidad = 0.98;
@@ -190,9 +183,10 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
                 ArrayList<Asteroide> newAsteroide = new ArrayList<Asteroide>();
                 for (Asteroide asteroide1 : asteroides)
-                    if (checkAsteroidCollision(asteroide1))
-                        end=true;
-                    else
+                    if (checkAsteroidCollision(asteroide1)) {
+                        isPlaying = false;
+                        end = true;
+                    } else
                         newAsteroide.add(asteroide1);
 
 
@@ -256,7 +250,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
      */
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-       //Movimiento
+        //Movimiento
         if (motionEvent.getX() < screenWith / 2)
             switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_UP:

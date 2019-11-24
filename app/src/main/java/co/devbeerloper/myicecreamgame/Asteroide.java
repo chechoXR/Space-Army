@@ -110,7 +110,7 @@ public class Asteroide {
 
 
     /**
-     * Control the position and behaviour of the icecream car
+     * Control the position and behaviour of the spaceship car
      */
     public void updateInfo () {
 
