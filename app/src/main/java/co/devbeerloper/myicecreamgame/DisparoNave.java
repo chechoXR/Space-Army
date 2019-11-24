@@ -85,7 +85,7 @@ public class DisparoNave {
 
 
         if (this.positionX < this.screenWidth)
-            this.positionX += 5;
+            this.positionX += 7;
         else
             this.visible = false;
 
@@ -94,5 +94,11 @@ public class DisparoNave {
     public boolean isVisible() {
         return visible;
     }
+
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
 
 }

@@ -133,4 +133,8 @@ public class NaveEnemiga {
         return visible;
     }
 
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
 }
