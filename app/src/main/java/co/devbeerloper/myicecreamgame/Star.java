@@ -7,12 +7,12 @@ import android.graphics.BitmapFactory;
 import java.util.Random;
 
 
-public class Cloud {
+public class Star {
 
     public static final float INIT_X =100;
     public static final float INIT_Y =100;
-    public static final int SPRITE_SIZE_WIDTH =100;
-    public static final int SPRITE_SIZE_HEIGTH=100;
+    public static final int SPRITE_SIZE_WIDTH =32;
+    public static final int SPRITE_SIZE_HEIGTH=33   ;
     public static final float GRAVITY_FORCE=0;
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;
@@ -28,28 +28,28 @@ public class Cloud {
     private boolean visible = true;
 
 
-    public Cloud(Context context, float screenWidth, float screenHeigth){
+    public Star(Context context, float screenWidth, float screenHeigth){
         Random rd = new Random();
 
         speed = 1;
         positionX =screenWidth;
-        positionY =rd.nextInt((int)(screenHeigth/2));
+        positionY =rd.nextInt((int)(screenHeigth));
         isJumping = false;
         //Getting bitmap from resource
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.cloud);
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.estrella);
         spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
-        this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
+        this.maxX = screenWidth - (spriteIcecreamCar.getWidth());
         this.maxY = screenHeigth - spriteIcecreamCar.getHeight();
     }
 
-    public Cloud(Context context, float initialX, float initialY, float screenWidth, float screenHeigth){
+    public Star(Context context, float initialX, float initialY, float screenWidth, float screenHeigth){
 
         speed = 1;
         positionX = initialX;
         positionY = initialY;
 
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.cloud);
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.estrella);
         spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
@@ -89,7 +89,7 @@ public class Cloud {
         this.positionY = positionY;
     }
 
-    public Bitmap getSpriteIcecreamCar() {
+    public Bitmap getSprite() {
         return spriteIcecreamCar;
     }
 

@@ -3,4 +3,6 @@
     <color name="colorPrimary">#DC22EB</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="SpaceGray">#606060</color>
+    <color name="SpaceGrayButton">#808080</color>
 </resources>
