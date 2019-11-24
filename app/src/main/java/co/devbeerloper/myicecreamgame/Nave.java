@@ -127,7 +127,10 @@ public class Nave {
             positionY = maxY;
         }
 
+    }
 
+    //Se dispara una bala
+    public void fire(){
 
 
     }
