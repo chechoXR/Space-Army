@@ -7,28 +7,21 @@ import android.graphics.BitmapFactory;
 import java.util.Random;
 
 
-public class AdultCream {
+public class NaveEnemiga {
 
     public static final float INIT_X =100;
     public static final float INIT_Y =100;
     public static final int SPRITE_SIZE_WIDTH =59;
     public static final int SPRITE_SIZE_HEIGTH=70;
-    public static final float GRAVITY_FORCE=0;
-    private final int MIN_SPEED = 1;
-    private final int MAX_SPEED = 20;
-
-    private float maxY;
-    private float maxX;
-
     private float speed = 0;
     private float positionX;
     private float positionY;
-    private Bitmap spriteIcecreamCar;
+    private Bitmap spriteNaveEnemiga;
     private boolean isJumping;
     private boolean visible = true;
 
 
-    public AdultCream(Context context, float screenWidth, float screenHeigth){
+    public NaveEnemiga(Context context, float screenWidth, float screenHeigth){
         Random rd = new Random();
 
         speed = 1;
@@ -40,14 +33,13 @@ public class AdultCream {
 
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.enemigo);
 
-        spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
+        spriteNaveEnemiga = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
-        this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
-        this.maxY = screenHeigth - spriteIcecreamCar.getHeight();
+
     }
 
 
-    public AdultCream(Context context, float screenWidth, float screenHeigth, int y){
+    public NaveEnemiga(Context context, float screenWidth, float screenHeigth, int y){
         Random rd = new Random();
 
         speed = 1;
@@ -59,14 +51,11 @@ public class AdultCream {
 
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.enemigo);
 
-        spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
-
-        this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
-        this.maxY = screenHeigth - spriteIcecreamCar.getHeight();
+        spriteNaveEnemiga = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
     }
 
 
-    public AdultCream(Context context, float initialX, float initialY, float screenWidth, float screenHeigth){
+    public NaveEnemiga(Context context, float initialX, float initialY, float screenWidth, float screenHeigth){
 
         speed = 1;
         positionX = initialX;
@@ -75,11 +64,7 @@ public class AdultCream {
 
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.enemigo);
 
-        spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
-
-        this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
-        this.maxY = screenHeigth - spriteIcecreamCar.getHeight();
-
+        spriteNaveEnemiga = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
     }
 
     public static float getInitX() {
@@ -114,12 +99,12 @@ public class AdultCream {
         this.positionY = positionY;
     }
 
-    public Bitmap getSpriteIcecreamCar() {
-        return spriteIcecreamCar;
+    public Bitmap getSpriteNaveEnemiga() {
+        return spriteNaveEnemiga;
     }
 
-    public void setSpriteIcecreamCar(Bitmap spriteIcecreamCar) {
-        this.spriteIcecreamCar = spriteIcecreamCar;
+    public void setSpriteNaveEnemiga(Bitmap spriteNaveEnemiga) {
+        this.spriteNaveEnemiga = spriteNaveEnemiga;
     }
 
     public boolean isJumping() {
@@ -135,44 +120,17 @@ public class AdultCream {
      */
     public void updateInfo () {
 
-        /*
-        if (isJumping) {
-            speed += 5;
-        } else {
-            speed -= 5;
-        }
 
-        if (speed > MAX_SPEED) {
-            speed = MAX_SPEED;
-        }
-        if (speed < MIN_SPEED) {
-            speed = MIN_SPEED;
-        }
-        this.positionY -= speed - GRAVITY_FORCE;
-
-        if (positionY < 0) {
-            positionY = 0;
-        }
-        if (positionY > maxY) {
-            positionY = maxY;
-        }
-
-*/      if(this.positionX>-100)
+        if(this.positionX>-100)
             this.positionX-=5;
         else
             this.visible=false;
-
 
 
     }
 
     public boolean isVisible() {
         return visible;
-    }
-
-    public int random (){
-        int a = (int) Math.random()*4;
-        return a;
     }
 
 }

@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 
-public class IceCreamCar {
+public class Nave {
 
     public static final float INIT_X =100;
     public static final float INIT_Y =100;
@@ -21,11 +21,11 @@ public class IceCreamCar {
     private float speed = 0;
     private float positionX;
     private float positionY;
-    private Bitmap spriteIcecreamCar;
+    private Bitmap spriteNave;
     private boolean isJumping;
 
 
-    public IceCreamCar (Context context, float screenWidth, float screenHeigth){
+    public Nave(Context context, float screenWidth, float screenHeigth){
 
         speed = 1;
         positionX = this.INIT_X;
@@ -33,23 +33,23 @@ public class IceCreamCar {
         isJumping = false;
         //Getting bitmap from resource
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.icecreamcar);
-        spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
+        spriteNave = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
-        this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
-        this.maxY = screenHeigth - spriteIcecreamCar.getHeight();
+        this.maxX = screenWidth - (spriteNave.getWidth()/2);
+        this.maxY = screenHeigth - spriteNave.getHeight();
     }
 
-    public IceCreamCar (Context context, float initialX, float initialY, float screenWidth, float screenHeigth){
+    public Nave(Context context, float initialX, float initialY, float screenWidth, float screenHeigth){
 
         speed = 1;
         positionX = initialX;
         positionY = initialY;
 
         Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.icecreamcar);
-        spriteIcecreamCar  = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
+        spriteNave = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
-        this.maxX = screenWidth - (spriteIcecreamCar.getWidth()/2);
-        this.maxY = screenHeigth - spriteIcecreamCar.getHeight();
+        this.maxX = screenWidth - (spriteNave.getWidth()/2);
+        this.maxY = screenHeigth - spriteNave.getHeight();
 
     }
 
@@ -85,12 +85,12 @@ public class IceCreamCar {
         this.positionY = positionY;
     }
 
-    public Bitmap getSpriteIcecreamCar() {
-        return spriteIcecreamCar;
+    public Bitmap getSpriteNave() {
+        return spriteNave;
     }
 
-    public void setSpriteIcecreamCar(Bitmap spriteIcecreamCar) {
-        this.spriteIcecreamCar = spriteIcecreamCar;
+    public void setSpriteNave(Bitmap spriteNave) {
+        this.spriteNave = spriteNave;
     }
 
     public boolean isJumping() {
