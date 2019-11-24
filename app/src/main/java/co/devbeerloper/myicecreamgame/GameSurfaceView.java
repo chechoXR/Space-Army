@@ -114,7 +114,6 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             canvas.drawText("Score: " + score, 60, 60, text);
 
 
-
             //holder.unlockCanvasAndPost(canvas);
             removeID = new ArrayList<Integer>();
 
@@ -164,7 +163,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 Boolean b = PosY.remove((Object) pos);
                 pos = rd.nextInt(PosY.size() - 1);
 
-                if (r % 2 == 0 || r % 3 == 0 ) {
+                if (r % 2 == 0 || r % 3 == 0) {
                     Asteroide asteroide = new Asteroide(getContext(), screenWith, screenHeight, PosY.get(pos));
                     asteroides.add(asteroide);
                 }
@@ -174,7 +173,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
                 int starsBound = rd.nextInt(5);
 
-                for(int i=0; i<starsBound;i++) {
+                for (int i = 0; i < starsBound; i++) {
                     Star star = new Star(getContext(), screenWith, screenHeight);
                     stars.add(star);
                     canvas.drawBitmap(star.getSprite(), star.getPositionX(), star.getPositionY(), new Paint());
@@ -204,21 +203,18 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
                 naveEnemigas = newNaveEnemiga;
 
-                if(end) {
+                if (end) {
                     Paint endtext = new Paint();
                     endtext.setTextSize(145);
                     endtext.setColor(Color.RED);
-                    canvas.drawText("Game Over!", (screenWith / 2) - endtext.getTextSize()*5/2, screenHeight / 2, endtext);
+                    canvas.drawText("Game Over!", (screenWith / 2) - endtext.getTextSize() * 5 / 2, screenHeight / 2, endtext);
                 }
                 holder.unlockCanvasAndPost(canvas);
-
-
 
 
             } else {
                 holder.unlockCanvasAndPost(canvas);
             }
-
 
 
         }
@@ -252,18 +248,32 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
      */
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        if(motionEvent.getX() < screenWith/2)
-        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_UP:
+       //Movimiento
+        if (motionEvent.getX() < screenWith / 2)
+            switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_UP:
 
-                System.out.println("TOUCH UP - STOP JUMPING");
-                nave.setJumping(false);
-                break;
-            case MotionEvent.ACTION_DOWN:
-                System.out.println("TOUCH DOWN - JUMP");
-                nave.setJumping(true);
-                break;
-        }
+                    System.out.println("TOUCH UP - STOP JUMPING");
+                    nave.setJumping(false);
+                    break;
+                case MotionEvent.ACTION_DOWN:
+                    System.out.println("TOUCH DOWN - JUMP");
+                    nave.setJumping(true);
+                    break;
+            }
+        //Disparo
+        if (motionEvent.getX() > screenWith / 2)
+            switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_UP:
+
+                    System.out.println("TOUCH UP - NOTHING");
+                    //Nada
+                    break;
+                case MotionEvent.ACTION_DOWN:
+                    System.out.println("TOUCH DOWN - FIRE!");
+                    nave.fire();
+                    break;
+            }
         return true;
     }
 
