@@ -11,8 +11,8 @@ public class NaveEnemiga {
 
     public static final float INIT_X =100;
     public static final float INIT_Y =100;
-    public static final int SPRITE_SIZE_WIDTH =59;
-    public static final int SPRITE_SIZE_HEIGTH=70;
+    public static final int SPRITE_SIZE_WIDTH =100;
+    public static final int SPRITE_SIZE_HEIGTH=101;
     private float speed = 0;
     private float positionX;
     private float positionY;

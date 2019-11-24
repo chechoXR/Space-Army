@@ -10,7 +10,7 @@ public class Nave {
     public static final float INIT_X =100;
     public static final float INIT_Y =100;
     public static final int SPRITE_SIZE_WIDTH =250;
-    public static final int SPRITE_SIZE_HEIGTH=250;
+    public static final int SPRITE_SIZE_HEIGTH=244;
     public static final float GRAVITY_FORCE=10;
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;
@@ -32,7 +32,7 @@ public class Nave {
         positionY = this.INIT_Y;
         isJumping = false;
         //Getting bitmap from resource
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.icecreamcar);
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.nave);
         spriteNave = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteNave.getWidth()/2);
@@ -45,7 +45,7 @@ public class Nave {
         positionX = initialX;
         positionY = initialY;
 
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.icecreamcar);
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.nave);
         spriteNave = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
         this.maxX = screenWidth - (spriteNave.getWidth()/2);
@@ -127,7 +127,10 @@ public class Nave {
             positionY = maxY;
         }
 
+    }
 
+    //Se dispara una bala
+    public void fire(){
 
 
     }

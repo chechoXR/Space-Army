@@ -11,8 +11,8 @@ public class Asteroide {
 
     public static final float INIT_X =100;
     public static final float INIT_Y =100;
-    public static final int SPRITE_SIZE_WIDTH =100;
-    public static final int SPRITE_SIZE_HEIGTH=100;
+    public static final int SPRITE_SIZE_WIDTH =80;
+    public static final int SPRITE_SIZE_HEIGTH=81;
 
 
 
@@ -33,7 +33,7 @@ public class Asteroide {
 
         //Getting bitmap from resource
 
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.kid);
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.meteorito);
 
         spriteAsteroide = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
@@ -48,7 +48,7 @@ public class Asteroide {
 
         //Getting bitmap from resource
 
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.kid);
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.meteorito);
 
         spriteAsteroide = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
@@ -61,7 +61,7 @@ public class Asteroide {
         positionY = initialY;
 
 
-        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.kid);
+        Bitmap originalBitmap= BitmapFactory.decodeResource(context.getResources(), R.drawable.meteorito);
 
         spriteAsteroide = Bitmap.createScaledBitmap(originalBitmap, SPRITE_SIZE_WIDTH, SPRITE_SIZE_HEIGTH, false);
 
