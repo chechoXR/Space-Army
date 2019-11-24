@@ -7,8 +7,6 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,12 +14,12 @@ import java.util.Random;
 public class GameSurfaceView extends SurfaceView implements Runnable {
 
     private boolean isPlaying;
-    private IceCreamCar icecreamCar;
+    private Nave nave;
 
     private ArrayList<Cloud> clouds;
 
-    private ArrayList<AdultCream> adultCreams;
-    private ArrayList<BoyCream> boyCreams;
+    private ArrayList<NaveEnemiga> naveEnemigas;
+    private ArrayList<Asteroide> asteroides;
     ArrayList<Integer> removeID;
     private Paint paint;
     private Paint paintCloud;
@@ -45,12 +43,12 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
      */
     public GameSurfaceView(Context context, float screenWith, float screenHeight) {
         super(context);
-        icecreamCar = new IceCreamCar(context, screenWith, screenHeight);
+        nave = new Nave(context, screenWith, screenHeight);
 
         this.clouds = new ArrayList<Cloud>();
 
-        this.adultCreams = new ArrayList<AdultCream>();
-        this.boyCreams = new ArrayList<BoyCream>();
+        this.naveEnemigas = new ArrayList<NaveEnemiga>();
+        this.asteroides = new ArrayList<Asteroide>();
         paint = new Paint();
         paintCloud = new Paint();
         paintAdult = new Paint();
@@ -82,17 +80,17 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     }
 
     private void updateInfo() {
-        icecreamCar.updateInfo();
+        nave.updateInfo();
 
         for (Cloud c : clouds) {
             c.updateInfo();
         }
 
-        for (AdultCream a : adultCreams) {
+        for (NaveEnemiga a : naveEnemigas) {
             a.updateInfo();
         }
 
-        for (BoyCream b : boyCreams) {
+        for (Asteroide b : asteroides) {
             b.updateInfo();
         }
 
@@ -129,15 +127,15 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                     removeID.add(i);
             }
 
-            for (int i = 0; i < adultCreams.size(); i++) {
-                if (adultCreams.get(i).isVisible())
-                    canvas.drawBitmap(adultCreams.get(i).getSpriteIcecreamCar(), adultCreams.get(i).getPositionX(), adultCreams.get(i).getPositionY(), new Paint());
+            for (int i = 0; i < naveEnemigas.size(); i++) {
+                if (naveEnemigas.get(i).isVisible())
+                    canvas.drawBitmap(naveEnemigas.get(i).getSpriteNaveEnemiga(), naveEnemigas.get(i).getPositionX(), naveEnemigas.get(i).getPositionY(), new Paint());
                 else
                     removeID.add(i);
             }
-            for (int i = 0; i < boyCreams.size(); i++) {
-                if (boyCreams.get(i).isVisible())
-                    canvas.drawBitmap(boyCreams.get(i).getSpriteIcecreamCar(), boyCreams.get(i).getPositionX(), boyCreams.get(i).getPositionY(), new Paint());
+            for (int i = 0; i < asteroides.size(); i++) {
+                if (asteroides.get(i).isVisible())
+                    canvas.drawBitmap(asteroides.get(i).getSpriteAsteroide(), asteroides.get(i).getPositionX(), asteroides.get(i).getPositionY(), new Paint());
                 else
                     removeID.add(i);
             }
@@ -146,9 +144,9 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             for (int i = 0; i < removeID.size(); i++)
                 clouds.remove(removeID.get(i));
             for (int i = 0; i < removeID.size(); i++)
-                adultCreams.remove(removeID.get(i));
+                naveEnemigas.remove(removeID.get(i));
             for (int i = 0; i < removeID.size(); i++)
-                boyCreams.remove(removeID.get(i));
+                asteroides.remove(removeID.get(i));
 
 
             removeID.clear();
@@ -156,52 +154,52 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
             double porcentajeProbabilidad = 0.98;
             boolean end = false;
-            canvas.drawBitmap(icecreamCar.getSpriteIcecreamCar(), icecreamCar.getPositionX(), icecreamCar.getPositionY(), paint);
+            canvas.drawBitmap(nave.getSpriteNave(), nave.getPositionX(), nave.getPositionY(), paint);
             int r = rd.nextInt(10000);
             if (r > 10000 * porcentajeProbabilidad) {
                 Cloud cloud = new Cloud(getContext(), screenWith, screenHeight);
 
                 int pos = rd.nextInt(PosY.size() - 1);
-                AdultCream adultCream = new AdultCream(getContext(), screenWith, screenHeight, PosY.get(pos));
+                NaveEnemiga naveEnemiga = new NaveEnemiga(getContext(), screenWith, screenHeight, PosY.get(pos));
                 Boolean b = PosY.remove((Object) pos);
                 pos = rd.nextInt(PosY.size() - 1);
 
                 if (r % 2 == 0 || r % 3 == 0 ) {
-                    BoyCream boyCream = new BoyCream(getContext(), screenWith, screenHeight, PosY.get(pos));
-                    boyCreams.add(boyCream);
+                    Asteroide asteroide = new Asteroide(getContext(), screenWith, screenHeight, PosY.get(pos));
+                    asteroides.add(asteroide);
                 }
 
-                //canvas.drawBitmap(cloud.getSpriteIcecreamCar(),cloud.getPositionX(),cloud.getPositionY(),paintCloud);
+                //canvas.drawBitmap(cloud.getSpriteNave(),cloud.getPositionX(),cloud.getPositionY(),paintCloud);
                 clouds.add(cloud);
-                adultCreams.add(adultCream);
+                naveEnemigas.add(naveEnemiga);
 
 
                 canvas.drawBitmap(cloud.getSpriteIcecreamCar(), cloud.getPositionX(), cloud.getPositionY(), new Paint());
 
 
 
-                ArrayList<BoyCream> newBoyCream = new ArrayList<BoyCream>();
-                for (BoyCream boyCream1 : boyCreams)
-                    if (checkBoyCollision(boyCream1))
+                ArrayList<Asteroide> newAsteroide = new ArrayList<Asteroide>();
+                for (Asteroide asteroide1 : asteroides)
+                    if (checkBoyCollision(asteroide1))
                         score += 10;
                     else
-                        newBoyCream.add(boyCream1);
+                        newAsteroide.add(asteroide1);
 
 
-                boyCreams = newBoyCream;
+                asteroides = newAsteroide;
 
-                ArrayList<AdultCream> newAdultCream = new ArrayList<AdultCream>();
+                ArrayList<NaveEnemiga> newNaveEnemiga = new ArrayList<NaveEnemiga>();
 
-                for (AdultCream adultCream1 : adultCreams) {
-                    if (checkAdultCollision(adultCream1)) {
+                for (NaveEnemiga naveEnemiga1 : naveEnemigas) {
+                    if (checkAdultCollision(naveEnemiga1)) {
                         isPlaying = false;
                         end = true;
                     } else
-                        newAdultCream.add(adultCream1);
+                        newNaveEnemiga.add(naveEnemiga1);
                 }
 
 
-                adultCreams = newAdultCream;
+                naveEnemigas = newNaveEnemiga;
 
                 if(end) {
                     Paint endtext = new Paint();
@@ -254,28 +252,28 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
                 System.out.println("TOUCH UP - STOP JUMPING");
-                icecreamCar.setJumping(false);
+                nave.setJumping(false);
                 break;
             case MotionEvent.ACTION_DOWN:
                 System.out.println("TOUCH DOWN - JUMP");
-                icecreamCar.setJumping(true);
+                nave.setJumping(true);
                 break;
         }
         return true;
     }
 
-    public boolean checkBoyCollision(BoyCream boyCream) {
+    public boolean checkBoyCollision(Asteroide asteroide) {
 
-        return icecreamCar.getPositionX() + icecreamCar.getSpriteIcecreamCar().getWidth() > boyCream.getPositionX() &&
-                icecreamCar.getPositionY() + icecreamCar.getSpriteIcecreamCar().getHeight() >= boyCream.getPositionY() + boyCream.getSpriteIcecreamCar().getHeight() &&
-                icecreamCar.getPositionY() <= boyCream.getPositionY();
+        return nave.getPositionX() + nave.getSpriteNave().getWidth() > asteroide.getPositionX() &&
+                nave.getPositionY() + nave.getSpriteNave().getHeight() >= asteroide.getPositionY() + asteroide.getSpriteAsteroide().getHeight() &&
+                nave.getPositionY() <= asteroide.getPositionY();
 
     }
 
-    public boolean checkAdultCollision(AdultCream adultCream) {
-        return icecreamCar.getPositionX() + icecreamCar.getSpriteIcecreamCar().getWidth() > adultCream.getPositionX() &&
-                icecreamCar.getPositionY() + icecreamCar.getSpriteIcecreamCar().getHeight() >= adultCream.getPositionY() + adultCream.getSpriteIcecreamCar().getHeight() &&
-                icecreamCar.getPositionY() <= adultCream.getPositionY();
+    public boolean checkAdultCollision(NaveEnemiga naveEnemiga) {
+        return nave.getPositionX() + nave.getSpriteNave().getWidth() > naveEnemiga.getPositionX() &&
+                nave.getPositionY() + nave.getSpriteNave().getHeight() >= naveEnemiga.getPositionY() + naveEnemiga.getSpriteNaveEnemiga().getHeight() &&
+                nave.getPositionY() <= naveEnemiga.getPositionY();
     }
 
 }
