@@ -41,6 +41,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private float screenWith;
     private float screenHeight;
     private int score;
+    private int life;
 
 
     /**
@@ -71,6 +72,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         this.screenWith = screenWith;
         this.screenHeight = screenHeight;
         this.score = 0;
+        this.life = 100;
 
 
     }
@@ -129,7 +131,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             Paint text = new Paint();
             text.setTextSize(45);
             text.setColor(Color.RED);
-            canvas.drawText("Score: " + score, 60, 60, text);
+            canvas.drawText("Score: " + score, 300, 60, text);
+            canvas.drawText("Life: " + life, 60, 60, text);
 
 
             //holder.unlockCanvasAndPost(canvas);
@@ -144,8 +147,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 if (stars.get(i).isVisible()) {
                     canvas.drawBitmap(stars.get(i).getSprite(), stars.get(i).getPositionX(), stars.get(i).getPositionY(), new Paint());
                     starsToKeep.add(stars.get(i));
-                } else
-                    score -= 10;
+                }
             }
 
             for (int i = 0; i < naveEnemigas.size(); i++) {
@@ -201,6 +203,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 int pos = rd.nextInt(PosY.size() - 1);
                 NaveEnemiga naveEnemiga = new NaveEnemiga(getContext(), screenWith, screenHeight, PosY.get(pos));
                 Boolean b = PosY.remove((Object) pos);
+                DisparoEnemigo disparoNaveEnemigo = new DisparoEnemigo(this.context, naveEnemiga.getPositionX() + naveEnemiga.getSpriteNaveEnemiga().getWidth(), naveEnemiga.getPositionY() + naveEnemiga.getSpriteNaveEnemiga().getHeight() / 2, screenWith, screenHeight);
+                disparosEnemigos.add(disparoNaveEnemigo);
                 pos = rd.nextInt(PosY.size() - 1);
 
                 if (r % 2 == 0 || r % 3 == 0) {
@@ -232,7 +236,6 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 asteroides = newAsteroide;
 
                 ArrayList<NaveEnemiga> newNaveEnemiga = new ArrayList<NaveEnemiga>();
-
                 for (NaveEnemiga naveEnemiga1 : naveEnemigas) {
                     if (checkEnemyCollision(naveEnemiga1)) {
                         isPlaying = false;
@@ -241,8 +244,21 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                         newNaveEnemiga.add(naveEnemiga1);
                 }
 
+                ArrayList<DisparoEnemigo> newDisparoEnemigo = new ArrayList<DisparoEnemigo>();
+                for (DisparoEnemigo disparosEnemigos1: disparosEnemigos) {
+                    if (checkDisparoEnemigoCollision(disparosEnemigos1)){
+                        if(life <=0){
+                            isPlaying = false;
+                            end = true;
+                        }
+                    } else
+                        newDisparoEnemigo.add(disparosEnemigos1);
+                }
+
 
                 naveEnemigas = newNaveEnemiga;
+
+
 
                 if (end) {
                     Paint endtext = new Paint();
@@ -335,6 +351,13 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 nave.getPositionY() <= naveEnemiga.getPositionY();
     }
 
+    public boolean checkDisparoEnemigoCollision (DisparoEnemigo disparoEnemigo){
+        return nave.getPositionX() + nave.getSpriteNave().getWidth() > disparoEnemigo.getPositionX() &&
+                nave.getPositionX() < disparoEnemigo.getPositionX() &&
+                nave.getPositionY() + nave.getSpriteNave().getHeight() >= disparoEnemigo.getPositionY() &&
+                nave.getPositionY() <= disparoEnemigo.getPositionY();
+    }
+
     public void disparoNaveImpacto() {
 
 
@@ -345,7 +368,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                         naveEnemiga.getPositionY() + naveEnemiga.getSpriteNaveEnemiga().getHeight() >= disparoNave.getPositionY() &&
                         naveEnemiga.getPositionY() <= disparoNave.getPositionY();
                 if (colision) {
-                    score += 100;
+                    score += 150;
                     naveEnemiga.setVisible(false);
                     disparoNave.setVisible(false);
                 }
@@ -366,9 +389,17 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             }
         }
 
+        for (DisparoEnemigo disparoEnemigo: disparosEnemigos) {
+            boolean colision = disparoEnemigo.getPositionX() + disparoEnemigo.getSpriteDisparoEnemigo().getWidth() > nave.getPositionX() &&
+                    disparoEnemigo.getPositionX() < nave.getPositionX() &&
+                    disparoEnemigo.getPositionY() + disparoEnemigo.getSpriteDisparoEnemigo().getHeight() >= nave.getPositionY() &&
+                    disparoEnemigo.getPositionY() <= nave.getPositionY();
+            if (colision) {
+                life -=15;
+                disparoEnemigo.setVisible(false);
+            }
+        }
     }
-
-
 }
 
 

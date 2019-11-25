@@ -80,7 +80,7 @@ public class DisparoEnemigo {
 
 
         if(this.positionX>-100)
-            this.positionX-=5;
+            this.positionX-=7;
         else
             this.visible=false;
 
@@ -90,4 +90,7 @@ public class DisparoEnemigo {
         return visible;
     }
 
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 }
