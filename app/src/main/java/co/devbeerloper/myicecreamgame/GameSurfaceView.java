@@ -203,7 +203,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 int pos = rd.nextInt(PosY.size() - 1);
                 NaveEnemiga naveEnemiga = new NaveEnemiga(getContext(), screenWith, screenHeight, PosY.get(pos));
                 Boolean b = PosY.remove((Object) pos);
-                
+                DisparoEnemigo disparoNaveEnemigo = new DisparoEnemigo(this.context, naveEnemiga.getPositionX() + naveEnemiga.getSpriteNaveEnemiga().getWidth(), naveEnemiga.getPositionY() + naveEnemiga.getSpriteNaveEnemiga().getHeight() / 2, screenWith, screenHeight);
+                disparosEnemigos.add(disparoNaveEnemigo);
                 pos = rd.nextInt(PosY.size() - 1);
 
                 if (r % 2 == 0 || r % 3 == 0) {
