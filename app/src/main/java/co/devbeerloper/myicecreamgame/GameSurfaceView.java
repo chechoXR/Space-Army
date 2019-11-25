@@ -236,7 +236,6 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 asteroides = newAsteroide;
 
                 ArrayList<NaveEnemiga> newNaveEnemiga = new ArrayList<NaveEnemiga>();
-
                 for (NaveEnemiga naveEnemiga1 : naveEnemigas) {
                     if (checkEnemyCollision(naveEnemiga1)) {
                         isPlaying = false;
@@ -245,10 +244,21 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                         newNaveEnemiga.add(naveEnemiga1);
                 }
 
+                ArrayList<DisparoEnemigo> newDisparoEnemigo = new ArrayList<DisparoEnemigo>();
+                for (DisparoEnemigo disparosEnemigos1: disparosEnemigos) {
+                    if (checkDisparoEnemigoCollision(disparosEnemigos1)){
+                        if(life <=0){
+                            isPlaying = false;
+                            end = true;
+                        }
+                    } else
+                        newDisparoEnemigo.add(disparosEnemigos1);
+                }
+
 
                 naveEnemigas = newNaveEnemiga;
 
-                if (life == 0 ) end = false;
+
 
                 if (end) {
                     Paint endtext = new Paint();
@@ -341,6 +351,13 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 nave.getPositionY() <= naveEnemiga.getPositionY();
     }
 
+    public boolean checkDisparoEnemigoCollision (DisparoEnemigo disparoEnemigo){
+        return nave.getPositionX() + nave.getSpriteNave().getWidth() > disparoEnemigo.getPositionX() &&
+                nave.getPositionX() < disparoEnemigo.getPositionX() &&
+                nave.getPositionY() + nave.getSpriteNave().getHeight() >= disparoEnemigo.getPositionY() &&
+                nave.getPositionY() <= disparoEnemigo.getPositionY();
+    }
+
     public void disparoNaveImpacto() {
 
 
@@ -372,9 +389,17 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             }
         }
 
+        for (DisparoEnemigo disparoEnemigo: disparosEnemigos) {
+            boolean colision = disparoEnemigo.getPositionX() + disparoEnemigo.getSpriteDisparoEnemigo().getWidth() > nave.getPositionX() &&
+                    disparoEnemigo.getPositionX() < nave.getPositionX() &&
+                    disparoEnemigo.getPositionY() + disparoEnemigo.getSpriteDisparoEnemigo().getHeight() >= nave.getPositionY() &&
+                    disparoEnemigo.getPositionY() <= nave.getPositionY();
+            if (colision) {
+                life -=15;
+                disparoEnemigo.setVisible(false);
+            }
+        }
     }
-
-
 }
 
 

@@ -90,4 +90,7 @@ public class DisparoEnemigo {
         return visible;
     }
 
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 }
