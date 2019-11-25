@@ -41,6 +41,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
     private float screenWith;
     private float screenHeight;
     private int score;
+    private int life;
 
 
     /**
@@ -71,6 +72,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
         this.screenWith = screenWith;
         this.screenHeight = screenHeight;
         this.score = 0;
+        this.life = 100;
 
 
     }
@@ -129,7 +131,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
             Paint text = new Paint();
             text.setTextSize(45);
             text.setColor(Color.RED);
-            canvas.drawText("Score: " + score, 60, 60, text);
+            canvas.drawText("Score: " + score, 300, 60, text);
+            canvas.drawText("Life: " + life, 60, 60, text);
 
 
             //holder.unlockCanvasAndPost(canvas);
@@ -144,8 +147,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 if (stars.get(i).isVisible()) {
                     canvas.drawBitmap(stars.get(i).getSprite(), stars.get(i).getPositionX(), stars.get(i).getPositionY(), new Paint());
                     starsToKeep.add(stars.get(i));
-                } else
-                    score -= 10;
+                }
             }
 
             for (int i = 0; i < naveEnemigas.size(); i++) {
@@ -201,6 +203,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                 int pos = rd.nextInt(PosY.size() - 1);
                 NaveEnemiga naveEnemiga = new NaveEnemiga(getContext(), screenWith, screenHeight, PosY.get(pos));
                 Boolean b = PosY.remove((Object) pos);
+                
                 pos = rd.nextInt(PosY.size() - 1);
 
                 if (r % 2 == 0 || r % 3 == 0) {
@@ -243,6 +246,8 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
 
 
                 naveEnemigas = newNaveEnemiga;
+
+                if (life == 0 ) end = false;
 
                 if (end) {
                     Paint endtext = new Paint();
@@ -345,7 +350,7 @@ public class GameSurfaceView extends SurfaceView implements Runnable {
                         naveEnemiga.getPositionY() + naveEnemiga.getSpriteNaveEnemiga().getHeight() >= disparoNave.getPositionY() &&
                         naveEnemiga.getPositionY() <= disparoNave.getPositionY();
                 if (colision) {
-                    score += 100;
+                    score += 150;
                     naveEnemiga.setVisible(false);
                     disparoNave.setVisible(false);
                 }
